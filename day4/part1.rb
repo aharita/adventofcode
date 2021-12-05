@@ -26,10 +26,9 @@ File.open('input.txt').each.with_index do |line, line_index|
   board << line.split(' ')
 
   if board_row == 5
-
     boards << board
-    bingo_rows << []
-    bingo_cols << []
+    bingo_rows << [0, 0, 0, 0, 0]
+    bingo_cols << [0, 0, 0, 0, 0]
     board = []
   end
 end
@@ -41,26 +40,16 @@ def process(draw_numbers, boards, bingo_rows, bingo_cols)
         row.each.with_index do |_col, col_index|
           if b[row_index][col_index] == number
 
-            if bingo_rows[b_index][row_index].nil?
-              bingo_rows[b_index][row_index] = 1
-            else
-              bingo_rows[b_index][row_index] += 1
-
-              if bingo_rows[b_index][row_index] == 5
-                b[row_index][col_index] = nil
-                return b, number
-              end
+            bingo_rows[b_index][row_index] += 1
+            if bingo_rows[b_index][row_index] == 5
+              b[row_index][col_index] = nil
+              return b, number
             end
 
-            if bingo_cols[b_index][col_index].nil?
-              bingo_cols[b_index][col_index] = 1
-            else
-              bingo_cols[b_index][col_index] += 1
-
-              if bingo_cols[b_index][col_index] == 5
-                b[row_index][col_index] = nil
-                return b, number
-              end
+            bingo_cols[b_index][col_index] += 1
+            if bingo_cols[b_index][col_index] == 5
+              b[row_index][col_index] = nil
+              return b, number
             end
 
             b[row_index][col_index] = nil
