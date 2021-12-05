@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# https://adventofcode.com/2021/day/2
+# https://adventofcode.com/2021/day/3
 
 data = []
 initialized = false
