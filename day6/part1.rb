@@ -2,31 +2,25 @@
 
 # https://adventofcode.com/2021/day/6
 
-data = [0] * 10
+data = []
+new_born = []
 
 File.open('input.txt').each.with_index do |line, _line_index|
-  fishes = line.split(',').map(&:to_i)
-  fishes.each do |fish|
-    data[fish] += 1
-  end
+  data = line.split(',').map(&:to_i)
 end
 
-spawns = data.sum
-
-(0..17).each do |_day|
-  if data[0].positive?
-    data[9] += data[0]
-    data[7] += data[0]
-    spawns += data[0]
-    data[0] = 0
+(0..79).each do |_day|
+  data.each.with_index do |_fish, index|
+    if (data[index]).zero?
+      new_born << 8
+      data[index] = 6
+    else
+      data[index] -= 1
+    end
   end
 
-  data.each_index do |index|
-    next if data[index].zero?
-
-    data[index - 1] = data[index]
-    data[index] = 0
-  end
+  data.concat(new_born)
+  new_born = []
 end
 
-puts spawns
+puts data.length
