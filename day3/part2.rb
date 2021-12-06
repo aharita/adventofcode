@@ -34,11 +34,11 @@ end
   co2_count = count_ones_zeros_at(index, co2_scrubber)
 
   if oxygen_gener.length > 1
-    oxygen_gener = reject_from_report_at(index, oxy_count[1] >= oxy_count[0] ? '0' : '1', oxygen_gener)
+    oxygen_gener = reject_from_report_at(index, oxy_count[0] >= oxy_count[1] ? '0' : '1', oxygen_gener)
   end
 
   if co2_scrubber.length > 1
-    co2_scrubber = reject_from_report_at(index, co2_count[0] <= co2_count[1] ? '1' : '0', co2_scrubber)
+    co2_scrubber = reject_from_report_at(index, co2_count[1] <= co2_count[0] ? '1' : '0', co2_scrubber)
   end
 end
 
