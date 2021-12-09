@@ -13,31 +13,25 @@ File.open('input.txt').each.with_index do |line, _line_index|
   numbers[7] = data.find { |x| x.length == 3 }
   numbers[8] = data.find { |x| x.length == 7 }
 
-  candidates_for_3 = data.select { |x| x.length == 5 }
-  number_3_index   = candidates_for_3.map { |x| x.gsub(/[#{numbers[7]}]/, '') }
-                                     .find_index { |x| x.length == 2 }
-  numbers[3] = candidates_for_3[number_3_index]
+  candidates = data.select { |x| x.length == 5 }
+  number_3_index = candidates.map { |x| x.gsub(/[#{numbers[7]}]/, '') }.find_index { |x| x.length == 2 }
+  numbers[3] = candidates[number_3_index]
 
-  candidates_for_5 = candidates_for_3 - [numbers[3]]
-  number_5_index   = candidates_for_5.map { |x| x.gsub(/[#{numbers[7]}]/, '') }
-                                     .map { |x| x.gsub(/[#{numbers[4]}]/, '') }
-                                     .find_index { |x| x.length == 1 }
-  numbers[5] = candidates_for_5[number_5_index]
+  candidates -= [numbers[3]]
+  number_5_index = candidates.map { |x| x.gsub(/[#{numbers[7]}]/, '') }.map { |x| x.gsub(/[#{numbers[4]}]/, '') }.find_index { |x| x.length == 1 }
+  numbers[5] = candidates[number_5_index]
 
-  numbers[2] = (candidates_for_5 - [numbers[5]]).first
+  numbers[2] = (candidates - [numbers[5]]).first
 
-  candidates_for_9 = data.select { |x| x.length == 6 }
-  number_9_index   = candidates_for_9.map { |x| x.gsub(/[#{numbers[1]}]/, '') }
-                                     .map { |x| x.gsub(/[#{numbers[5]}]/, '') }
-                                     .find_index { |x| x.length == 0 }
-  numbers[9] = candidates_for_9[number_9_index]
+  candidates = data.select { |x| x.length == 6 }
+  number_9_index = candidates.map { |x| x.gsub(/[#{numbers[1]}]/, '') }.map { |x| x.gsub(/[#{numbers[5]}]/, '') }.find_index { |x| x.length == 0 }
+  numbers[9] = candidates[number_9_index]
 
-  candidates_for_0 = candidates_for_9 - [numbers[9]]
-  number_0_index   = candidates_for_0.map { |x| x.gsub(/[#{numbers[1]}]/, '') }
-                                     .find_index { |x| x.length == 4 }
-  numbers[0] = candidates_for_0[number_0_index]
+  candidates -= [numbers[9]]
+  number_0_index = candidates.map { |x| x.gsub(/[#{numbers[1]}]/, '') }.find_index { |x| x.length == 4 }
+  numbers[0] = candidates[number_0_index]
 
-  numbers[6] = (candidates_for_0 - [numbers[0]]).first
+  numbers[6] = (candidates - [numbers[0]]).first
 
   sum += "#{numbers.index(decode[0])}#{numbers.index(decode[1])}#{numbers.index(decode[2])}#{numbers.index(decode[3])}".to_i
 end
