@@ -15,21 +15,14 @@ File.open('input.txt').each.with_index do |line, _line_index|
 
   # Determine number 3, grab all with length 5
   candidates_for_3 = data.select { |x| x.length == 5 }
-  number_3_index   = candidates_for_3.map { |x| x.sub(numbers[7][0], '') }
-                                     .map { |x| x.sub(numbers[7][1], '') }
-                                     .map { |x| x.sub(numbers[7][2], '') }
+  number_3_index   = candidates_for_3.map { |x| x.gsub(/[#{numbers[7]}]/, '') }
                                      .find_index { |x| x.length == 2 }
   numbers[3] = candidates_for_3[number_3_index]
 
   # Determine number 5
   candidates_for_5 = candidates_for_3 - [numbers[3]]
-  number_5_index   = candidates_for_5.map { |x| x.sub(numbers[7][0], '') }
-                                     .map { |x| x.sub(numbers[7][1], '') }
-                                     .map { |x| x.sub(numbers[7][2], '') }
-                                     .map { |x| x.sub(numbers[4][0], '') }
-                                     .map { |x| x.sub(numbers[4][1], '') }
-                                     .map { |x| x.sub(numbers[4][2], '') }
-                                     .map { |x| x.sub(numbers[4][3], '') }
+  number_5_index   = candidates_for_5.map { |x| x.gsub(/[#{numbers[7]}]/, '') }
+                                     .map { |x| x.gsub(/[#{numbers[4]}]/, '') }
                                      .find_index { |x| x.length == 1 }
 
   numbers[5] = candidates_for_5[number_5_index]
@@ -39,20 +32,14 @@ File.open('input.txt').each.with_index do |line, _line_index|
 
   # Determine number 9, grab all with length 6
   candidates_for_9 = data.select { |x| x.length == 6 }
-  number_9_index   = candidates_for_9.map { |x| x.sub(numbers[1][0], '') }
-                                     .map { |x| x.sub(numbers[1][1], '') }
-                                     .map { |x| x.sub(numbers[5][0], '') }
-                                     .map { |x| x.sub(numbers[5][1], '') }
-                                     .map { |x| x.sub(numbers[5][2], '') }
-                                     .map { |x| x.sub(numbers[5][3], '') }
-                                     .map { |x| x.sub(numbers[5][4], '') }
+  number_9_index   = candidates_for_9.map { |x| x.gsub(/[#{numbers[1]}]/, '') }
+                                     .map { |x| x.gsub(/[#{numbers[5]}]/, '') }
                                      .find_index { |x| x.length == 0 }
   numbers[9] = candidates_for_9[number_9_index]
 
-  # Determine number 0, 
+  # Determine number 0
   candidates_for_0 = candidates_for_9 - [numbers[9]]
-  number_0_index   = candidates_for_0.map { |x| x.sub(numbers[1][0], '') }
-                                     .map { |x| x.sub(numbers[1][1], '') }
+  number_0_index   = candidates_for_0.map { |x| x.gsub(/[#{numbers[1]}]/, '') }
                                      .find_index { |x| x.length == 4 }
 
   numbers[0] = candidates_for_0[number_0_index]
