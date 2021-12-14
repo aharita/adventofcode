@@ -10,14 +10,14 @@ table = {
 }
 sum = 0
 File.open('input.txt').each.with_index do |line, _line_index|
-  queue = []
+  stack = []
   line.strip.split('').each do |c|
     case c
     when '(', '[', '{', '<'
-      queue << c
+      stack << c
     else
-      if table[c][1] == queue.last
-        queue.pop
+      if table[c][1] == stack.last
+        stack.pop
       else
         sum += table[c][0]
         break

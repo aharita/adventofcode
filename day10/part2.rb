@@ -2,30 +2,30 @@
 
 # https://adventofcode.com/2021/day/10
 
-table = { ')' => [1, '('], ']' => [2, '['], '}' => [3, '{'], '>' => [4, '<'] }
-table2 = { '(' => 1, '[' => 2, '{' => 3, '<' => 4 }
+mapping = { ')' => '(', ']' => '[', '}' => '{', '>' => '<' }
+scores_table = { '(' => 1, '[' => 2, '{' => 3, '<' => 4 }
 sums = []
 File.open('input.txt').each.with_index do |line, _line_index|
-  queue = []
-  line.strip.split('').each do |c|
-    case c
+  stack = []
+  line.strip.split('').each do |char|
+    case char
     when '(', '[', '{', '<'
-      queue << c
+      stack << char
     else
-      if table[c][1] == queue.last
-        queue.pop
+      if mapping[char] == stack.last
+        stack.pop
       else
-        queue = []
+        stack = []
         break
       end
     end
   end
 
-  next if queue.empty?
+  next if stack.empty?
 
   sum = 0
-  queue.reverse.each do |c|
-    sum = (sum * 5) + table2[c]
+  stack.reverse.each do |char|
+    sum = (sum * 5) + scores_table[char]
   end
   sums << sum
 end
