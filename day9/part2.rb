@@ -24,7 +24,7 @@ def check_point(x, y, data, seen)
   sum += check_point(x, y + 1, data, seen)
   sum += check_point(x, y - 1, data, seen)
 
-  return sum + 1
+  sum + 1
 end
 
 (1..data.length - 2).each do |row_index|
