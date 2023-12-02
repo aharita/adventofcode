@@ -31,7 +31,6 @@ data.each do |line|
   end
 
   game_id_count += game_id if !impossible_game
-  impossible_game = false
 end
 
 puts game_id_count

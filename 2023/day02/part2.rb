@@ -1,31 +1,35 @@
-# # frozen_string_literal: true
-# # https://adventofcode.com/2023/day/2
+# frozen_string_literal: true
+# https://adventofcode.com/2023/day/2
 
-# data = []
-# File.open('input.txt').each do |line|
-#   data << line
-# end
+data = []
+File.open('input.txt').each do |line|
+  data << line
+end
 
-# map = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
-# sum = 0
-# data.each do |line|
-#   numbers = {}
-#   map.each do |number|
-#     index = line.index(number)
-#     if !index.nil?
-#       line.gsub(number).map { Regexp.last_match.begin(0) }.each do |instances|
-#         numbers[instances] = map.find_index(number)
-#       end
-#     end
-#   end
+total = 0
 
-#   line.each_char.with_index do |char, index|
-#     if char.match(/^(\d)+$/)
-#       numbers[index] = char.to_i
-#     end
-#   end
+data.each do |line|
+  game_id = line.match(/Game (\d+):/)[1].to_i
 
-#   sum = sum + "#{numbers[numbers.keys.sort.first]}#{numbers[numbers.keys.sort.last]}".to_i
-# end
+  blue_max = 0
+  red_max = 0
+  green_max = 0
 
-# puts sum
+  line.split(';').each do |set|
+    blue_set = set.match(/(\d+) blue/)
+    red_set = set.match(/(\d+) red/)
+    green_set = set.match(/(\d+) green/)
+
+    blue_cubes = blue_set.nil? ? 0 : blue_set[1].to_i
+    red_cubes = red_set.nil? ? 0 : red_set[1].to_i
+    green_cubes = green_set.nil? ? 0 : green_set[1].to_i
+
+    blue_max = [blue_max, blue_cubes].max
+    green_max = [green_max, green_cubes].max
+    red_max = [red_max, red_cubes].max
+  end
+
+  total += (blue_max * red_max * green_max)
+end
+
+puts total
