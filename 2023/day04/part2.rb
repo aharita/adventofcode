@@ -2,31 +2,28 @@
 # https://adventofcode.com/2023/day/4
 
 data = []
-File.open('input.txt').each do |line|
+copies = {}
+File.open('input.txt').each.with_index do |line, index|
   numbers = line.split(':').map(&:strip)
   data << numbers[1].split('|').map(&:strip)
+  copies[index] = 1
 end
 
-total = 0
-data.each do |game|
+data.each.with_index do |game, index|
   left = {}
-  game_total = 0
 
   game[0].split(' ').map(&:to_i).each do |number|
     left[number] = true
   end
 
+  winner_index = 1
   game[1].split(' ').map(&:to_i).each do |number|
     if left[number]
-      if game_total == 0
-        game_total = 1
-      else
-        game_total *= 2
-      end
+      copies[index + winner_index] += (1 * copies[index])
+      winner_index += 1
     end
   end
 
-  total += game_total
 end
 
-puts total
+puts copies.values.sum
