@@ -1,91 +1,105 @@
 # frozen_string_literal: true
 # https://adventofcode.com/2023/day/5
 
-data = []
+seeds = []
+soil = []
+fertilizer = []
+water = []
+light = []
+temperature = []
+humidity = []
+location = []
+
+index = 1
 File.open('input.txt').each do |line|
-  to_add = line.split('')
-  to_add.pop()
-  data << to_add
-end
-
-def adjacent_symbol?(data, number_length, row, col)
-  # Check Top
-  if row - 1 >= 0
-    (0..number_length - 1).each do |index|
-      return [row - 1, col + index] if data[row - 1][col + index] == '*'
-    end
+  line = line.strip
+  if line == ''
+    index += 1
+    next
   end
 
-  # Check Bottom
-  if row + 1 <= data.length - 1
-    (0..number_length - 1).each do |index|
-      return [row + 1, col + index] if data[row + 1][col + index] == '*'
-    end
-  end
+  next if line.include?('map')
 
-  # Check Left
-  if col - 1 >= 0
-    if row - 1 >= 0
-      return [row - 1, col - 1] if data[row - 1][col - 1] == '*'
-    end
-
-    if row + 1 <= data.length - 1
-      return [row + 1, col - 1] if data[row + 1][col - 1] == '*'
-    end
-
-    return [row, col - 1] if data[row][col - 1] == '*'
-  end
-
-  # Check Right
-  if col + number_length <= data[0].length - 1
-    if row - 1 >= 0
-      return [row - 1, col + number_length] if data[row - 1][col + number_length] == '*'
-    end
-
-    if row + 1 <= data.length - 1
-      return [row + 1, col + number_length] if data[row + 1][col + number_length] == '*'
-    end
-
-    return [row, col + number_length] if data[row][col + number_length] == '*'
+  case index
+  when 1
+    seeds = line.split(':')[1].split(' ').map(&:to_i)
+  when 2
+    soil << line.split(' ').map(&:to_i)
+  when 3
+    fertilizer << line.split(' ').map(&:to_i)
+  when 4
+    water << line.split(' ').map(&:to_i)
+  when 5
+    light << line.split(' ').map(&:to_i)
+  when 6
+    temperature << line.split(' ').map(&:to_i)
+  when 7
+    humidity << line.split(' ').map(&:to_i)
+  when 8
+    location << line.split(' ').map(&:to_i)
   end
 end
 
-numbers = {}
-data.each.with_index do |line, row|
-  temp_number = ""
-  line.each.with_index do |char, col|
-    if char =~ /\d/
-      temp_number += char
-    else
-      if temp_number.length > 0
-        coords = adjacent_symbol?(data, temp_number.length, row, col - temp_number.length)
-        if coords
-          numbers[coords] ||= []
-          numbers[coords] << temp_number.to_i
-        end
-
-        temp_number = ""
-      end
-    end
-
-    if line.length == col + 1 && temp_number.length > 0
-      coords = adjacent_symbol?(data, temp_number.length, row, col - temp_number.length)
-      if coords
-        numbers[coords] ||= []
-        numbers[coords] << temp_number.to_i
-      end
-
-      temp_number = ""
+def get_first_match(map, temp)
+  map.each do |x|
+    if temp >= x[1] && temp <= (x[1] + x[2] - 1)
+      return temp - x[1] + x[0]
     end
   end
+
+  temp
 end
 
-sum = 0
-numbers.each do |key, values|
-  if values.length == 2
-    puts values.to_s
-    sum += values[0] * values[1]
+def get_range_match(map, min, max)
+  data = [min, max]
+  map.each do |x|
+    if min >= x[1] && min <= (x[1] + x[2] - 1)
+      data[0] = x[0]
+    end
+
+    if max >= x[1] && max <= (x[1] + x[2] - 1)
+      data[1] = x[1] + x[2] - 1
+    end
   end
+
+  data
 end
 
-puts sum
+seed_ranges = []
+seeds.each_slice(2) do |min, max|
+  seed_ranges << min
+  seed_ranges << (min + max - 1)
+end
+
+final_range = [99999999999, 0]
+seed_ranges.each_slice(2) do |min, max|
+  data = [min, max]
+  data = get_range_match(soil, min, max)
+  data = get_range_match(fertilizer, min, max)
+  data = get_range_match(water, min, max)
+  data = get_range_match(light, min, max)
+  data = get_range_match(temperature, min, max)
+  data = get_range_match(humidity, min, max)
+  data = get_range_match(location, min, max)
+
+  final_range[0] = [final_range[0], data[0]].min
+  final_range[1] = [final_range[1], data[1]].max
+end
+
+puts final_range.to_s
+
+min_location = 999999999999999999999
+(final_range[0]..final_range[1]).reverse_each do |seed|
+  temp = seed
+  temp = get_first_match(soil, temp)
+  temp = get_first_match(fertilizer, temp)
+  temp = get_first_match(water, temp)
+  temp = get_first_match(light, temp)
+  temp = get_first_match(temperature, temp)
+  temp = get_first_match(humidity, temp)
+  temp = get_first_match(location, temp)
+
+  min_location = [min_location, temp].min
+  puts "#{seed} -> #{min_location}"
+  break if min_location == 0
+end
