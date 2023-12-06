@@ -6,8 +6,8 @@ File.open('input.txt').each do |line|
   data << line.strip
 end
 
-times = data[0].split(':')[1].join(' ').map(&:to_i)
-distances = data[1].split(':')[1].join(' ').map(&:to_i)
+times = [data[0].split(':')[1].split(' ').join().to_i]
+distances = [data[1].split(':')[1].split(' ').join().to_i]
 
 puts times.to_s
 puts distances.to_s
