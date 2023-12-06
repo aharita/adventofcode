@@ -54,11 +54,11 @@ def get_range_match(map, min, max)
   data = [min, max]
   map.each do |x|
     if min >= x[1] && min <= (x[1] + x[2] - 1)
-      data[0] = x[0]
+      data[0] = [data[0], x[0]].max
     end
 
     if max >= x[1] && max <= (x[1] + x[2] - 1)
-      data[1] = x[1] + x[2] - 1
+      data[1] = [data[1], x[1] + x[2] - 1].min
     end
   end
 
@@ -89,7 +89,7 @@ end
 puts final_range.to_s
 
 min_location = 999999999999999999999
-(final_range[0]..final_range[1]).reverse_each do |seed|
+(final_range[0]..final_range[1]).each do |seed|
   temp = seed
   temp = get_first_match(soil, temp)
   temp = get_first_match(fertilizer, temp)
@@ -99,7 +99,14 @@ min_location = 999999999999999999999
   temp = get_first_match(humidity, temp)
   temp = get_first_match(location, temp)
 
+  if min_location == 0 || temp == 0
+    puts "#{min_location} -> #{temp}"
+    break
+  end
+
   min_location = [min_location, temp].min
-  puts "#{seed} -> #{min_location}"
-  break if min_location == 0
+  # puts "#{seed} -> #{min_location}"
+  # break if min_location == 0
 end
+
+puts min_location
