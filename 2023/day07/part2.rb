@@ -10,7 +10,19 @@ def get_hand_type(hand)
       cards[char] += 1
     end
   end
+  
+  # Fit in Joker here, remove J key, add it to the biggest key instead
+  if cards.has_key?('J') && cards['J'] != 5
+    puts "Before: #{cards}"
+    j_count = cards['J']
+    cards.delete('J')
 
+    last = cards.sort_by{|k, v| v}.last
+    cards[last[0]] += j_count
+
+    puts "After: #{cards}"
+  end
+  
   case cards.keys.count
   when 5
     1
@@ -45,7 +57,7 @@ map_values = {
   "8" => 8,
   "9" => 9,
   "T" => 10,
-  "J" => 11,
+  "J" => 1,
   "Q" => 12,
   "K" => 13,
   "A" => 14,
