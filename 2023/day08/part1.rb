@@ -35,7 +35,6 @@ end
 
 current_node = 'AAA'
 steps = 0
-seen = {}
 
 while true
 
