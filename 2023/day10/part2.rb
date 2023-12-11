@@ -90,6 +90,7 @@ end
 
 times = 0
 current_position = start
+# I chose to start with south because of my input
 direction = 's'
 while true
   row = current_position[0]
@@ -117,6 +118,7 @@ end
 # In a polygon, when you draw a line to the left from any point (inside or outside) and if it crosses odd
 # number of times then it's a point that is inside. Because this is a squared poligon, we chose only J, L, | and S characters
 # that count as a "wall". Any other characeters we skip/ignore like -, F, 7
+# Example:  F-----J  this is only 1 wall crossing
 # In my input, S behaves like a |, so thats why I count it. It depends on your input
 total_crossings = 0
 map.each_with_index do |row, row_index|

@@ -89,6 +89,7 @@ end
 
 times = 0
 current_position = start
+# I chose to start with south because of my input
 direction = 's'
 while true
   row = current_position[0]
@@ -97,9 +98,6 @@ while true
 
   break if times > 1 && symbol == 'S'
   times += 1
-
-  pp '======='
-  pp "i am at #{current_position} symbol: #{symbol} moving to #{direction}"
 
   # Move to this direction first
   current_position = update_current_position(direction, current_position)
@@ -111,8 +109,6 @@ while true
 
   # Update new direction
   direction = from_to(symbol, direction)
-
-  pp "updated to: #{current_position} symbol: #{symbol} moving to #{direction}"
 end
 
 pp times / 2
