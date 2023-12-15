@@ -3,7 +3,7 @@
 
 platform = []
 File.open('example.txt').each_with_index do |line, index|
-  platform << line.strip
+  platform << line.strip.split('')
 end
 
 (0..platform[0].length - 1).each do |col_index|
